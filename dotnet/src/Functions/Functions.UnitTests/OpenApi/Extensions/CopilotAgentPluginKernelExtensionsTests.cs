@@ -16,14 +16,18 @@ public sealed class CopilotAgentPluginKernelExtensionsTests
         var kernel = new Kernel();
         var testPluginsDir = Path.Combine(Directory.GetCurrentDirectory(), "OpenApi", "TestPlugins");
         var manifestFilePath = Path.Combine(testPluginsDir, "messages-apiplugin.json");
-
+        var calendarManifestFilePath = Path.Combine(testPluginsDir, "calendar-apiplugin.json");
         // Arrange
         var plugin = await kernel.ImportPluginFromCopilotAgentPluginAsync("MessagesPlugin", manifestFilePath);
+        var plugin2 = await kernel.ImportPluginFromCopilotAgentPluginAsync("Calendar", calendarManifestFilePath);
 
         // Assert
         Assert.NotNull(plugin);
         Assert.Equal(2, plugin.FunctionCount);
         Assert.Equal(411, plugin["me_sendMail"].Description.Length);
         Assert.Equal(1000, plugin["me_ListMessages"].Description.Length);
+
+        Assert.NotNull(plugin2);
+        Assert.Equal(4, plugin2.FunctionCount);
     }
 }
