@@ -11,6 +11,10 @@
                 {
                     "method": "Get",
                     "uriTemplate": "/me/calendar/events"
+                },
+                {
+                  "method": "Post",
+                  "uriTemplate": "/me/calendar/events"
                 }
             ]
         }
