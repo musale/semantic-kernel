@@ -1,0 +1,134 @@
+openapi: 3.0.4
+info:
+  title: OData Service for namespace microsoft.graph - Subset
+  description: This OData service is located at http://localhost
+  version: beta
+servers:
+  - url: http://localhost
+paths:
+  /copilot/retrieval:
+    post:
+      tags:
+        - copilot.copilotRoot.Actions
+      summary: Invoke action retrieval
+      operationId: copilot_retrieval
+      requestBody:
+        description: Action parameters
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                queryString:
+                  type: string
+                filterExpression:
+                  type: string
+                  nullable: true
+                resourceMetadata:
+                  type: array
+                  items:
+                    type: string
+                    nullable: true
+                maximumNumberOfResults:
+                  maximum: 2147483647
+                  minimum: -2147483648
+                  type: number
+                  format: int32
+                  nullable: true
+        required: true
+      responses:
+        2XX:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microsoft.graph.retrievalResponse'
+      deprecated: true
+      x-ms-deprecation:
+        version: 2024-12/PrivatePreview:retrievalAPI
+components:
+  schemas:
+    microsoft.graph.retrievalResponse:
+      title: retrievalResponse
+      required:
+        - '@odata.type'
+      type: object
+      properties:
+        retrievalHits:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.retrievalHit'
+        '@odata.type':
+          type: string
+    microsoft.graph.retrievalHit:
+      title: retrievalHit
+      required:
+        - '@odata.type'
+      type: object
+      properties:
+        extracts:
+          type: array
+          items:
+            $ref: '#/components/schemas/microsoft.graph.retrievalExtract'
+        resourceMetadata:
+          $ref: '#/components/schemas/microsoft.graph.searchResourceMetadataDictionary'
+        resourceType:
+          $ref: '#/components/schemas/microsoft.graph.groundingEntityType'
+        sensitivityLabel:
+          $ref: '#/components/schemas/microsoft.graph.searchSensitivityLabelInfo'
+        webUrl:
+          type: string
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.retrievalExtract:
+      title: retrievalExtract
+      required:
+        - '@odata.type'
+      type: object
+      properties:
+        text:
+          type: string
+          nullable: true
+        '@odata.type':
+          type: string
+    microsoft.graph.searchResourceMetadataDictionary: { }
+    microsoft.graph.groundingEntityType:
+      title: groundingEntityType
+      enum:
+        - site
+        - list
+        - listItem
+        - drive
+        - driveItem
+        - unknownFutureValue
+      type: string
+    microsoft.graph.searchSensitivityLabelInfo:
+      title: searchSensitivityLabelInfo
+      required:
+        - '@odata.type'
+      type: object
+      properties:
+        color:
+          type: string
+          nullable: true
+        displayName:
+          type: string
+          nullable: true
+        isEncrypted:
+          type: boolean
+          nullable: true
+        priority:
+          maximum: 2147483647
+          minimum: -2147483648
+          type: number
+          format: int32
+          nullable: true
+        sensitivityLabelId:
+          type: string
+          nullable: true
+        tooltip:
+          type: string
+          nullable: true
+        '@odata.type':
+          type: string
