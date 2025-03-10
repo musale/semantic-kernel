@@ -44,27 +44,28 @@ public class BearerAuthenticationProviderWithCancellationToken
         var token = await this.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
-    // private async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)
-    // {
-    //     var scopes = new string[] { "https://graph.microsoft.com/.default" };
-    //     try
-    //     {
-    //         var authResult = await this._client.AcquireTokenSilent(scopes, (await this._client.GetAccountsAsync().ConfigureAwait(false)).FirstOrDefault()).ExecuteAsync(cancellationToken).ConfigureAwait(false);
-    //         return authResult.AccessToken;
-    //     }
-    //     catch
-    //     {
-    //         var authResult = await this._client.AcquireTokenWithDeviceCode(scopes, deviceCodeResult =>
-    //         {
-    //             Console.WriteLine(deviceCodeResult.Message);
-    //             return Task.CompletedTask;
-    //         }).ExecuteAsync(cancellationToken).ConfigureAwait(false);
-    //         return authResult.AccessToken;
-    //     }
-    // }
-
     private async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)
     {
-        return await Task.FromResult("GE_CORP_ACCOUNT_TOKEN_HERE").ConfigureAwait(false);
+        var scopes = new string[] { "https://graph.microsoft.com/.default" };
+        try
+        {
+            var authResult = await this._client.AcquireTokenSilent(scopes, (await this._client.GetAccountsAsync().ConfigureAwait(false)).FirstOrDefault()).ExecuteAsync(cancellationToken).ConfigureAwait(false);
+            return authResult.AccessToken;
+        }
+        catch
+        {
+            var authResult = await this._client.AcquireTokenWithDeviceCode(scopes, deviceCodeResult =>
+            {
+                Console.WriteLine(deviceCodeResult.Message);
+                return Task.CompletedTask;
+            }).ExecuteAsync(cancellationToken).ConfigureAwait(false);
+            return authResult.AccessToken;
+        }
     }
+
+    // TODO: delete this hack to bypass demo tenant limitations at this time
+    // private async Task<string> GetAccessTokenAsync(CancellationToken cancellationToken)
+    // {
+    //     return await Task.FromResult("GE_TOKEN_OF_CORP_ACCOUNT").ConfigureAwait(false);
+    // }
 }
