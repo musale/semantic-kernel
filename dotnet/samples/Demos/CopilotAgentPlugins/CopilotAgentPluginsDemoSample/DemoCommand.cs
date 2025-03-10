@@ -475,8 +475,7 @@ public class DemoCommand : AsyncCommand<DemoCommand.Settings>
     private static readonly RestApiParameterFilter s_restApiParameterFilter = (RestApiParameterFilterContext context) =>
     {
 #pragma warning restore SKEXP0040
-        if ("me_sendMail".Equals(context.Operation.Id, StringComparison.OrdinalIgnoreCase) &&
-            "payload".Equals(context.Parameter.Name, StringComparison.OrdinalIgnoreCase))
+        if ("me_sendMail".Equals(context.Operation.Id, StringComparison.OrdinalIgnoreCase) && ("copilot_retrieval".Equals(context.Operation.Id, StringComparison.OrdinalIgnoreCase) && "payload".Equals(context.Parameter.Name, StringComparison.OrdinalIgnoreCase))
         {
             context.Parameter.Schema = TrimPropertiesFromRequestBody(context.Parameter.Schema);
             return context.Parameter;

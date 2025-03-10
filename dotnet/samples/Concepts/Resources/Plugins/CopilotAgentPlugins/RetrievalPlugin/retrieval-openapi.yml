@@ -1,10 +1,10 @@
 openapi: 3.0.4
 info:
   title: OData Service for namespace microsoft.graph - Subset
-  description: This OData service is located at http://localhost
+  description: This OData service is located at https://graph.microsoft.com/beta
   version: beta
 servers:
-  - url: http://localhost
+  - url: https://graph.microsoft.com/beta
 paths:
   /copilot/retrieval:
     post:
